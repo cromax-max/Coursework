@@ -1,0 +1,24 @@
+plugins {
+    id 'java'
+    id 'io.freefair.lombok' version '6.3.0'
+    id 'io.qameta.allure' version '2.9.6'
+}
+
+group 'ru.netology'
+version '1.0-SNAPSHOT'
+
+compileTestJava.options.encoding = 'UTF-8'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
+    testImplementation 'com.codeborne:selenide:6.0.3'
+}
+
+test {
+    useJUnitPlatform()
+}
