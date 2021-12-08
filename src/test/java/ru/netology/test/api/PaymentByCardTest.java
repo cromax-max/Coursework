@@ -4,13 +4,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.netology.app.ApiAction;
-import ru.netology.helper.PaymentCardDto;
+import ru.netology.helper.CardDto;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.hamcrest.Matchers.*;
+import static ru.netology.app.Request.postRequest;
 import static ru.netology.helper.DataHelper.*;
 import static ru.netology.helper.DbHelper.DbTable.ORDER_ENTITY;
 import static ru.netology.helper.DbHelper.DbTable.PAYMENT_ENTITY;
@@ -19,7 +17,7 @@ import static ru.netology.helper.DbHelper.*;
 public class PaymentByCardTest {
     int orderEntityRowCountBefore;
     int paymentEntityRowCountBefore;
-    PaymentCardDto dataCard;
+    CardDto dataCard;
 
     @BeforeAll
     static void setup() {
@@ -36,44 +34,44 @@ public class PaymentByCardTest {
     void shouldPaymentByApprovedCard() {
         dataCard = createApprovedCard();
 
-        ApiAction.paymentByCard(dataCard)
-                .assertThat().statusCode(200)
-                .and()
-                .body("status", equalTo("APPROVED"));
+        var response = postRequest("/pay", dataCard);
         var sqlResult = getLastRow(PAYMENT_ENTITY.getTitle());
 
+        assertThat(response.statusCode(), is(200));
+        assertThat(response.jsonPath()
+                .get("status"), is("APPROVED"));
         assertThat(getRowCount(ORDER_ENTITY.getTitle()), greaterThan(orderEntityRowCountBefore));
         assertThat(getRowCount(PAYMENT_ENTITY.getTitle()), greaterThan(paymentEntityRowCountBefore));
-        assertThat(sqlResult.get("status"), equalTo("APPROVED"));
-        assertThat(sqlResult.get("amount"), equalTo("45000"));
-        assertFalse(sqlResult.containsValue(dataCard.getHolder()));
+        assertThat(sqlResult, hasEntry("status", "APPROVED"));
+        assertThat(sqlResult, hasEntry("amount", "45000"));
+        assertThat(sqlResult, not(hasValue(dataCard.getNumber())));
     }
 
     @Test
     void shouldPaymentByDeclinedCard() {
         dataCard = createDeclinedCard();
 
-        ApiAction.paymentByCard(dataCard)
-                .assertThat().statusCode(200)
-                .and()
-                .body("status", equalTo("DECLINED"));
+        var response = postRequest("/pay", dataCard);
         var sqlResult = getLastRow(PAYMENT_ENTITY.getTitle());
 
+        assertThat(response.statusCode(), is(200));
+        assertThat(response.jsonPath()
+                .get("status"), is("DECLINED"));
         assertThat(getRowCount(ORDER_ENTITY.getTitle()), greaterThan(orderEntityRowCountBefore));
         assertThat(getRowCount(PAYMENT_ENTITY.getTitle()), greaterThan(paymentEntityRowCountBefore));
-        assertThat(sqlResult.get("status"), equalTo("DECLINED"));
-        assertFalse(sqlResult.containsValue(dataCard.getHolder()));
+        assertThat(sqlResult, hasEntry("status", "DECLINED"));
+        assertThat(sqlResult, not(hasValue(dataCard.getNumber())));
     }
 
     @Test
     void shouldPaymentByInvalidCard() {
-        dataCard = createInvalidCard();
+        dataCard = createInvalidCardWithoutNumber();
 
-        ApiAction.paymentByCard(dataCard)
-                .assertThat().statusCode(200)
-                .and()
-                .body("message", equalTo("Invalid card number"));
+        var response = postRequest("/pay", dataCard);
 
+        assertThat(response.statusCode(), is(400));
+        assertThat(response.jsonPath()
+                .get("error"), is("Missing card number"));
         assertThat(getRowCount(ORDER_ENTITY.getTitle()), equalTo(orderEntityRowCountBefore));
         assertThat(getRowCount(PAYMENT_ENTITY.getTitle()), equalTo(paymentEntityRowCountBefore));
     }
