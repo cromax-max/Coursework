@@ -19,47 +19,53 @@ public class PayTest {
     void shouldPaymentByApprovedCard() {
         page
                 .payment()
-                .completeForm(createApprovedCard());
-        page.notification.checkOkNotification();
+                .completeForm(createApprovedCard())
+                .getNotification()
+                .checkOkNotification();
     }
 
     @Test
     void shouldPaymentByDeclinedCard() {
         page
                 .payment()
-                .completeForm(createDeclinedCard());
-        page.notification.checkErrorNotification();
+                .completeForm(createDeclinedCard())
+                .getNotification()
+                .checkErrorNotification();
     }
 
     @Test
     void shouldPaymentByInvalidCard() {
         page
                 .payment()
-                .completeForm(createInvalidCard());
-        page.notification.checkErrorNotification();
+                .completeForm(createInvalidCard())
+                .getNotification()
+                .checkErrorNotification();
     }
 
     @Test
     void shouldCreditRequestByApprovedCard() {
         page
                 .creditRequest()
-                .completeForm(createApprovedCard());
-        page.notification.checkOkNotification();
+                .completeForm(createApprovedCard())
+                .getNotification()
+                .checkOkNotification();
     }
 
     @Test
     void shouldCreditRequestByDeclinedCard() {
         page
                 .creditRequest()
-                .completeForm(createDeclinedCard());
-        page.notification.checkErrorNotification();
+                .completeForm(createDeclinedCard())
+                .getNotification()
+                .checkErrorNotification();
     }
 
     @Test
     void shouldCreditRequestByInvalidCard() {
         page
                 .creditRequest()
-                .completeForm(createInvalidCard());
-        page.notification.checkErrorNotification();
+                .completeForm(createInvalidCard())
+                .getNotification()
+                .checkErrorNotification();
     }
 }

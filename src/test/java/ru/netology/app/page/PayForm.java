@@ -4,6 +4,8 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
 import ru.netology.helper.CardDto;
 
+import static com.codeborne.selenide.Selenide.page;
+
 public class PayForm {
 
     @FindBy(css = "[placeholder='0000 0000 0000 0000']")
@@ -19,12 +21,13 @@ public class PayForm {
     @FindBy(xpath = "//button[contains(.,'Продолжить')]")
     private SelenideElement resumeButton;
 
-    public void completeForm(CardDto card) {
+    public HomePage completeForm(CardDto card) {
         number.val(card.getNumber());
         month.val(card.getMonth());
         year.val(card.getYear());
         holder.val(card.getHolder());
         cvc.val(card.getCvc());
         resumeButton.click();
+        return page(HomePage.class);
     }
 }

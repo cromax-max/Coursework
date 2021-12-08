@@ -16,7 +16,7 @@ public class Notification {
 
     public void checkOkNotification() {
         okNotification
-                .shouldBe(visible, ofSeconds(8))
+                .shouldBe(visible, ofSeconds(10))
                 .shouldHave(exactText("Успешно Операция одобрена Банком."));
         errorNotification
                 .shouldBe(hidden);
@@ -24,7 +24,7 @@ public class Notification {
 
     public void checkErrorNotification() {
         errorNotification
-                .shouldBe(visible, ofSeconds(8))
+                .shouldBe(visible, ofSeconds(10))
                 .shouldHave(exactText("Ошибка Ошибка! Банк отказал в проведении операции."));
         okNotification.shouldBe(hidden);
     }

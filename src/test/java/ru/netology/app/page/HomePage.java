@@ -1,6 +1,7 @@
 package ru.netology.app.page;
 
 import com.codeborne.selenide.SelenideElement;
+import lombok.Getter;
 import org.openqa.selenium.support.FindBy;
 
 import static com.codeborne.selenide.Selenide.open;
@@ -8,7 +9,7 @@ import static com.codeborne.selenide.Selenide.page;
 
 public class HomePage {
 
-    public Notification notification;
+    @Getter private Notification notification;
 
     public HomePage() {
         open("http://localhost:8080/");

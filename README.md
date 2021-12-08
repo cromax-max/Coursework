@@ -33,7 +33,8 @@ URI и данные для подключения в файле `application.pro
 - Клонировать репо
 - Запустить БД: `docker-compose up -d`
 - Запустить Приложение: `java -jar artifacts/aqa-shop.jar &`
-- Запустить тесты: `gradlew clean test`
+- Запустить тесты: `./gradlew clean test -Dselenide.headless=true
+  `
 - Создать отчет:
-    - `gradlew allureReport`- создать отчет Allure
-    - `gradlew allureServe`- создать отчет Allure и открыть его в браузере по умолчанию
+    - `./gradlew allureReport`- создать отчет Allure
+    - `./gradlew allureServe`- создать отчет Allure и открыть его в браузере по умолчанию
