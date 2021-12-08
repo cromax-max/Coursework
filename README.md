@@ -30,19 +30,10 @@ __Запуск БД__
 URI и данные для подключения в файле `application.properties`  
 
 ### Запуск тестов
-1. Запустить БД:
-```
-docker-compose up -d
-```
-2. Запустить Приложение:
-```
-java -jar artifacts/aqa-shop.jar &
-```
-3. Запустить тесты:
-```
-gradlew clean test
-```
-4. Отчет(автоматическое открытие в браузере):
-```
-gradlew allureServe
-```
+- Клонировать репо
+- Запустить БД: `docker-compose up -d`
+- Запустить Приложение: `java -jar artifacts/aqa-shop.jar &`
+- Запустить тесты: `gradlew clean test`
+- Создать отчет:
+    - `gradlew allureReport`- создать отчет Allure
+    - `gradlew allureServe`- создать отчет Allure и открыть его в браузере по умолчанию
