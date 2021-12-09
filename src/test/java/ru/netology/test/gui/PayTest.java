@@ -8,7 +8,7 @@ import static ru.netology.helper.DataHelper.*;
 
 public class PayTest {
 
-    HomePage page;
+    private HomePage page;
 
     @BeforeEach
     void openPage() {
@@ -19,7 +19,8 @@ public class PayTest {
     void shouldPaymentByApprovedCard() {
         page
                 .payment()
-                .completeForm(createApprovedCard())
+                .completeForm(createApprovedCard());
+        page
                 .getNotification()
                 .checkOkNotification();
     }
@@ -28,7 +29,8 @@ public class PayTest {
     void shouldPaymentByDeclinedCard() {
         page
                 .payment()
-                .completeForm(createDeclinedCard())
+                .completeForm(createDeclinedCard());
+        page
                 .getNotification()
                 .checkErrorNotification();
     }
@@ -37,7 +39,8 @@ public class PayTest {
     void shouldPaymentByInvalidCard() {
         page
                 .payment()
-                .completeForm(createInvalidCard())
+                .completeForm(createInvalidCard());
+        page
                 .getNotification()
                 .checkErrorNotification();
     }
@@ -46,7 +49,8 @@ public class PayTest {
     void shouldCreditRequestByApprovedCard() {
         page
                 .creditRequest()
-                .completeForm(createApprovedCard())
+                .completeForm(createApprovedCard());
+        page
                 .getNotification()
                 .checkOkNotification();
     }
@@ -55,7 +59,8 @@ public class PayTest {
     void shouldCreditRequestByDeclinedCard() {
         page
                 .creditRequest()
-                .completeForm(createDeclinedCard())
+                .completeForm(createDeclinedCard());
+        page
                 .getNotification()
                 .checkErrorNotification();
     }
@@ -64,7 +69,8 @@ public class PayTest {
     void shouldCreditRequestByInvalidCard() {
         page
                 .creditRequest()
-                .completeForm(createInvalidCard())
+                .completeForm(createInvalidCard());
+        page
                 .getNotification()
                 .checkErrorNotification();
     }
