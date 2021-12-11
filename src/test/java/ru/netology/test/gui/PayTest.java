@@ -1,9 +1,10 @@
 package ru.netology.test.gui;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ru.netology.app.page.HomePage;
 
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.page;
 import static ru.netology.helper.DataHelper.*;
 
 public class PayTest {
@@ -21,7 +22,6 @@ public class PayTest {
                 .payment()
                 .completeForm(createApprovedCard());
         page
-                .getNotification()
                 .checkOkNotification();
     }
 
@@ -31,7 +31,6 @@ public class PayTest {
                 .payment()
                 .completeForm(createDeclinedCard());
         page
-                .getNotification()
                 .checkErrorNotification();
     }
 
@@ -41,7 +40,6 @@ public class PayTest {
                 .payment()
                 .completeForm(createInvalidCard());
         page
-                .getNotification()
                 .checkErrorNotification();
     }
 
@@ -51,7 +49,6 @@ public class PayTest {
                 .creditRequest()
                 .completeForm(createApprovedCard());
         page
-                .getNotification()
                 .checkOkNotification();
     }
 
@@ -61,7 +58,6 @@ public class PayTest {
                 .creditRequest()
                 .completeForm(createDeclinedCard());
         page
-                .getNotification()
                 .checkErrorNotification();
     }
 
@@ -71,7 +67,6 @@ public class PayTest {
                 .creditRequest()
                 .completeForm(createInvalidCard());
         page
-                .getNotification()
                 .checkErrorNotification();
     }
 }
