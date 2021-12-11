@@ -1,3 +1,4 @@
+![visitor badge](https://visitor-badge-reloaded.herokuapp.com/badge?page_id=cromax-max/Coursework&color=55acb7&style=flat&logo=Github&text=Welcome!)
 ### Курсовой проект представляет собой автоматизацию тестирования комплексного сервиса, взаимодействующего с СУБД и API Банка
 
 ### Задача
