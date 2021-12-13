@@ -17,6 +17,7 @@ repositories {
 
 dependencies {
     testImplementation(
+            'com.fasterxml.jackson.core:jackson-annotations:2.13.0',
             'io.rest-assured:rest-assured:4.4.0',
             'com.codeborne:selenide:6.1.1',
             'org.junit.jupiter:junit-jupiter:5.8.2',
@@ -27,5 +28,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    // ./gradlew clean test -Dselenide.headless=true -DbaseUrl=http://localhost:8080
+    systemProperty 'selenid.headless', System.getProperty('selenide.headless')
+    systemProperty 'baseUrl', System.getProperty('baseUrl')
 }

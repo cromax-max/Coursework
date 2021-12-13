@@ -1,15 +1,28 @@
 package ru.netology.app.page;
 
 import com.codeborne.selenide.SelenideElement;
-import lombok.Getter;
-import org.openqa.selenium.support.FindBy;
+import lombok.AllArgsConstructor;
 
-@Getter
-public class Notification {
+import java.time.Duration;
 
-    @FindBy(css = ".notification_status_ok")
-    private SelenideElement okNotification;
+import static com.codeborne.selenide.Condition.hidden;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 
-    @FindBy(css = ".notification_status_error")
-    private SelenideElement errorNotification;
+@AllArgsConstructor
+public enum Notification {
+    OK($(".notification_status_ok")),
+    ERROR($(".notification_status_error"));
+
+    private SelenideElement name;
+
+    SelenideElement isVisible() {
+        name.shouldBe(visible, Duration.ofSeconds(10));
+        return name;
+    }
+
+    SelenideElement isHidden() {
+        name.shouldBe(hidden);
+        return name;
+    }
 }
