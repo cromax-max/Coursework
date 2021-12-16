@@ -2,7 +2,7 @@ package ru.netology.app.page;
 
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.support.FindBy;
-import ru.netology.helper.CardDto;
+import ru.netology.helper.Card;
 
 public class PayForm {
 
@@ -19,7 +19,7 @@ public class PayForm {
     @FindBy(xpath = "//button[contains(.,'Продолжить')]")
     private SelenideElement resumeButton;
 
-    public void completeForm(CardDto card) {
+    public void completeForm(Card card) {
         number.val(card.getNumber());
         month.val(card.getMonth());
         year.val(card.getYear());
@@ -27,4 +27,5 @@ public class PayForm {
         cvc.val(card.getCvc());
         resumeButton.click();
     }
+    // public void enter...(String value){} *to validate fields*
 }

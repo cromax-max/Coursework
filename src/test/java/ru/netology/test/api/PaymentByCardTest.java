@@ -4,12 +4,11 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.netology.helper.CardDto;
+import ru.netology.app.Request;
+import ru.netology.helper.Card;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
-import static ru.netology.app.Request.postRequest;
-import static ru.netology.helper.DataHelper.*;
 import static ru.netology.helper.DbHelper.DbTable.ORDER_ENTITY;
 import static ru.netology.helper.DbHelper.DbTable.PAYMENT_ENTITY;
 import static ru.netology.helper.DbHelper.*;
@@ -17,7 +16,7 @@ import static ru.netology.helper.DbHelper.*;
 public class PaymentByCardTest {
     int orderEntityRowCountBefore;
     int paymentEntityRowCountBefore;
-    CardDto dataCard;
+    Card dataCard;
 
     @BeforeAll
     static void setup() {
@@ -30,11 +29,16 @@ public class PaymentByCardTest {
         paymentEntityRowCountBefore = getRowCount(PAYMENT_ENTITY.getTitle());
     }
 
+    @AfterAll
+    static void resetSetup() {
+        closeConnection();
+    }
+
     @Test
     void shouldPaymentByApprovedCard() {
-        dataCard = createApprovedCard();
+        dataCard = Card.APPROVED;
 
-        var response = postRequest("/pay", dataCard);
+        var response = Request.post("/pay", dataCard);
         var sqlResult = getLastRow(PAYMENT_ENTITY.getTitle());
 
         assertThat(response.statusCode(), is(200));
@@ -49,9 +53,9 @@ public class PaymentByCardTest {
 
     @Test
     void shouldPaymentByDeclinedCard() {
-        dataCard = createDeclinedCard();
+        dataCard = Card.DECLINED;
 
-        var response = postRequest("/pay", dataCard);
+        var response = Request.post("/pay", dataCard);
         var sqlResult = getLastRow(PAYMENT_ENTITY.getTitle());
 
         assertThat(response.statusCode(), is(200));
@@ -65,19 +69,14 @@ public class PaymentByCardTest {
 
     @Test
     void shouldPaymentByInvalidCard() {
-        dataCard = createInvalidCardWithoutNumber();
+        dataCard = Card.INVALID_WITHOUT_NUMBER;
 
-        var response = postRequest("/pay", dataCard);
+        var response = Request.post("/pay", dataCard);
 
         assertThat(response.statusCode(), is(400));
         assertThat(response.jsonPath()
                 .get("error"), is("Missing card number"));
         assertThat(getRowCount(ORDER_ENTITY.getTitle()), equalTo(orderEntityRowCountBefore));
         assertThat(getRowCount(PAYMENT_ENTITY.getTitle()), equalTo(paymentEntityRowCountBefore));
-    }
-
-    @AfterAll
-    static void resetSetup() {
-        closeConnection();
     }
 }

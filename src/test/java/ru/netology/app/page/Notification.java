@@ -1,31 +1,28 @@
 package ru.netology.app.page;
 
 import com.codeborne.selenide.SelenideElement;
-import org.openqa.selenium.support.FindBy;
+import lombok.AllArgsConstructor;
 
-import static com.codeborne.selenide.Condition.*;
-import static java.time.Duration.ofSeconds;
+import java.time.Duration;
 
-public class Notification {
+import static com.codeborne.selenide.Condition.hidden;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
 
-    @FindBy(css = ".notification_status_ok")
-    private SelenideElement okNotification;
+@AllArgsConstructor
+public enum Notification {
+    OK($(".notification_status_ok")),
+    ERROR($(".notification_status_error"));
 
-    @FindBy(css = ".notification_status_error")
-    private SelenideElement errorNotification;
+    private SelenideElement name;
 
-    public void checkOkNotification() {
-        okNotification
-                .shouldBe(visible, ofSeconds(10))
-                .shouldHave(exactText("Успешно Операция одобрена Банком."));
-        errorNotification
-                .shouldBe(hidden);
+    SelenideElement isVisible() {
+        name.shouldBe(visible, Duration.ofSeconds(10));
+        return name;
     }
 
-    public void checkErrorNotification() {
-        errorNotification
-                .shouldBe(visible, ofSeconds(10))
-                .shouldHave(exactText("Ошибка Ошибка! Банк отказал в проведении операции."));
-        okNotification.shouldBe(hidden);
+    SelenideElement isHidden() {
+        name.shouldBe(hidden);
+        return name;
     }
 }

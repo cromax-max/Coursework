@@ -1,10 +1,15 @@
 package ru.netology.test.gui;
 
-import org.junit.jupiter.api.*;
+import com.codeborne.selenide.Selenide;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import ru.netology.app.page.HomePage;
+import ru.netology.app.page.Notification;
+import ru.netology.helper.Card;
 
-import static com.codeborne.selenide.Selenide.*;
-import static ru.netology.helper.DataHelper.*;
+import static com.codeborne.selenide.Selenide.page;
+
 
 public class PayTest {
 
@@ -19,59 +24,58 @@ public class PayTest {
     void shouldPaymentByApprovedCard() {
         page
                 .payment()
-                .completeForm(createApprovedCard());
+                .completeForm(Card.APPROVED);
         page
-                .getNotification()
-                .checkOkNotification();
+                .check(Notification.OK);
     }
 
     @Test
     void shouldPaymentByDeclinedCard() {
         page
                 .payment()
-                .completeForm(createDeclinedCard());
+                .completeForm(Card.DECLINED);
         page
-                .getNotification()
-                .checkErrorNotification();
+                .check(Notification.ERROR);
     }
 
     @Test
     void shouldPaymentByInvalidCard() {
         page
                 .payment()
-                .completeForm(createInvalidCard());
+                .completeForm(Card.INVALID);
         page
-                .getNotification()
-                .checkErrorNotification();
+                .check(Notification.ERROR);
     }
 
     @Test
     void shouldCreditRequestByApprovedCard() {
         page
                 .creditRequest()
-                .completeForm(createApprovedCard());
+                .completeForm(Card.APPROVED);
         page
-                .getNotification()
-                .checkOkNotification();
+                .check(Notification.OK);
     }
 
     @Test
     void shouldCreditRequestByDeclinedCard() {
         page
                 .creditRequest()
-                .completeForm(createDeclinedCard());
+                .completeForm(Card.DECLINED);
         page
-                .getNotification()
-                .checkErrorNotification();
+                .check(Notification.ERROR);
     }
 
     @Test
     void shouldCreditRequestByInvalidCard() {
         page
                 .creditRequest()
-                .completeForm(createInvalidCard());
+                .completeForm(Card.INVALID);
         page
-                .getNotification()
-                .checkErrorNotification();
+                .check(Notification.ERROR);
+    }
+
+    @AfterAll
+    static void close() {
+        Selenide.closeWebDriver();
     }
 }
