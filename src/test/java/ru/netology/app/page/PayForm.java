@@ -27,4 +27,5 @@ public class PayForm {
         cvc.val(card.getCvc());
         resumeButton.click();
     }
+    // public void enter...(String value){} *to validate fields*
 }
